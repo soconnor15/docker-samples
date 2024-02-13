@@ -1,0 +1,1 @@
+Your react application code would live in this folder.

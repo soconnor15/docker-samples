@@ -1,0 +1,9 @@
+# example dockerfile building nginx container image with source compile locally
+# instead of using a build image specified in the primary Dockerfile
+#Using nginx to serve static client source
+FROM nginx:latest
+EXPOSE 3000
+#Copy nginx configuration file to nginx image
+COPY ./myapp.conf /etc/nginx/conf.d/myapp.conf
+#copy compiled source - Must be compiled locally using npm run css/build
+COPY ./build /usr/share/nginx/html
