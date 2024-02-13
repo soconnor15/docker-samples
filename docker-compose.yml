@@ -1,0 +1,38 @@
+#used to develop in dev containers easily - generally development is still being done on box directly
+version: '3.4'
+services:
+  api-server:
+    image: node-server:dev-local
+    build:
+      context: ./node-server
+      dockerfile: Dockerfile.dev
+    volumes:
+      #Volume for developing inside container so nodemon can detect changes to code
+      - ./server:/opt/node-server/
+      #Example directory volume for other files i.e. uploads directory or non-repository based your app might need
+      - /opt/files:/opt/files/
+    env_file:
+      - /etc/profile.d/myapp.sh
+    ports:
+      - 5000:5000
+  react-client:
+    image: myapp-client:dev-local
+    stdin_open: true
+    build:
+      context: ./nginx-react
+      dockerfile: Dockerfile.dev
+    volumes:
+      #Volume for developing inside container so nodemon can detect changes to code
+      - ./nginx-react:/opt/myapp/
+    ports:
+      - 3000:3000
+  #a node based microservice sample
+  ms1:
+    image: microservice1:dev-local
+    build:
+      context: /opt/microservice1
+      dockerfile: Dockerfile
+    volumes:
+      - /opt/microservice1:/opt/microservice1
+    env_file:
+      - /etc/profile.d/ms1-env.sh
